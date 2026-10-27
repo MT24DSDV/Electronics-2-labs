@@ -1,0 +1,29 @@
+LTspice 26.0.2 for Windows
+Circuit: C:\Desktop\MyNotes\uOttawa\Year_4\Electronics_II\labs\ELG3136_Lab2_Report\diffamp_tran.cir
+Start Time: Tue Oct 27 15:22:08 2026
+Options:plotwinsize=0
+solver = Normal
+Maximum thread count: 8
+tnom = 27
+temp = 27
+method = trap
+Direct Newton iteration succeeded in finding operating point.
+Total elapsed time: 2.637 seconds.
+
+Files loaded:
+C:\Desktop\MyNotes\uOttawa\Year_4\Electronics_II\labs\ELG3136_Lab2_Report\diffamp_tran.cir
+
+vc1: V(c1d)  =7.88792991638 at 0
+vc2: V(c2d)  =8.00813579559 at 0
+vb1: V(b1d)  =-2.31659555435 at 0
+vb2: V(b2d)  =-2.31814861298 at 0
+ve: V(ed)   =-2.9775454998 at 0
+it: Ic(Q4d) =0.001877742121 at 0
+vs_pp: PP(V(src)          )=0.19999961555 FROM 0.001 TO 0.003
+vd_pp: PP(V(b1d)          )=0.0205550193787 FROM 0.001 TO 0.003
+vo1_pp: PP(V(c1d)          )=0.785886287689 FROM 0.001 TO 0.003
+vod_pp: PP(V(c1d)-V(c2d)   )=1.57093334198 FROM 0.001 TO 0.003
+vc1_max: MAX(V(c1l)          )=9.98618602753 FROM 0.001 TO 0.003
+vc1_min: MIN(V(c1l)          )=5.90151405334 FROM 0.001 TO 0.003
+vod_max: MAX(V(c1l)-V(c2l)   )=4.07381296158 FROM 0.001 TO 0.003
+vod_min: MIN(V(c1l)-V(c2l)   )=-4.08620023727 FROM 0.001 TO 0.003

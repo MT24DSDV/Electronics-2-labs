@@ -1,0 +1,22 @@
+LTspice 26.0.2 for Windows
+Circuit: C:\Desktop\MyNotes\uOttawa\Year_4\Electronics_II\labs\ELG3136_Lab2_Report\diffamp_ac.cir
+Start Time: Tue Oct 27 15:20:52 2026
+solver = Normal
+Maximum thread count: 8
+tnom = 27
+temp = 27
+method = trap
+Direct Newton iteration succeeded in finding operating point.
+Total elapsed time: 0.238 seconds.
+
+Files loaded:
+C:\Desktop\MyNotes\uOttawa\Year_4\Electronics_II\labs\ELG3136_Lab2_Report\diffamp_ac.cir
+
+vd_vs: V(b1d)/V(src)            =(-19.856713373dB,-1.10032634328°) at 5000
+ad: (V(c1d)-V(c2d))/V(b1d)   =(37.7703146452dB,-179.984133005°) at 5000
+ad_se: V(c1d)/V(b1d)            =(31.7543147252dB,-179.984076694°) at 5000
+ads: (V(c1d)-V(c2d))/V(src)   =(17.9136012722dB,178.915540652°) at 5000
+acm_se: V(c1c)/V(b1c)            =(-31.6764223194dB,-179.989100739°) at 5000
+acm_d: (V(c1c)-V(c2c))/V(b1c)   =(-56.8559318014dB,174.01897651°) at 5000
+cmrr_se: Ad_se/Acm_se=(63.4307370446dB,0.00502404552092°)
+cmrr_d: Ad/Acm_d=(94.6262464466dB,5.99689048453°)

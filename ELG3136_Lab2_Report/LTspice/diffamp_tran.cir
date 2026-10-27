@@ -1,0 +1,65 @@
+* ELG3136 Lab 2: differential amplifier (Figure 7), DC point, waveforms, linear range
+*   copy d: differential mode, 200 mVpp source, RS = 76k  (vd ~ 20 mVpp)
+*   copy l: 300 mVpp straight into the base               (linear range)
+* Numbers go to View > SPICE Error Log.
+* Note: 2Meg, not 2M (2M means 2 milliohm in SPICE).
+
+VCC  vcc 0 10
+VEE  vee 0 -10
+VS   src 0 SINE(0 0.1 5k)
+VL   sl  0 SINE(0 0.15 5k)
+
+* ---------- copy d: differential mode ----------
+RSd  src  xd   76k
+C1d  xd   b1d  10u
+RB1d vcc  b1d  2Meg
+RB2d vcc  b2d  2Meg
+C2d  b2d  0    10u
+RC1d vcc  c1d  2.2k
+RC2d vcc  c2d  2.2k
+Q1d  c1d  b1d  ed  QP1
+Q2d  c2d  b2d  ed  QP2
+RKd  0    kd   6.8k
+Q3d  kd   kd   vee QM
+Q4d  ed   kd   vee QM 1.28
+
+* ---------- copy l: linear range ----------
+C1l  sl   b1l  10u
+RB1l vcc  b1l  2Meg
+RB2l vcc  b2l  2Meg
+C2l  b2l  0    10u
+RC1l vcc  c1l  2.2k
+RC2l vcc  c2l  2.2k
+Q1l  c1l  b1l  el  QP1
+Q2l  c2l  b2l  el  QP2
+RKl  0    kl   6.8k
+Q3l  kl   kl   vee QM
+Q4l  el   kl   vee QM 1.28
+
+.model QP1 NPN(IS=6.734e-15 BF=137 VAF=74 CJE=8p CJC=4p TF=350p)
+.model QP2 NPN(IS=6.734e-15 BF=129 VAF=74 CJE=8p CJC=4p TF=350p)
+.model QM  NPN(IS=6.734e-15 BF=150 VAF=74 CJE=8p CJC=4p TF=350p)
+
+.tran 0 3m 0 0.2u
+.options plotwinsize=0
+
+* ---------- DC operating point (t = 0) ----------
+.meas TRAN VC1   FIND V(c1d)  AT=0
+.meas TRAN VC2   FIND V(c2d)  AT=0
+.meas TRAN VB1   FIND V(b1d)  AT=0
+.meas TRAN VB2   FIND V(b2d)  AT=0
+.meas TRAN VE    FIND V(ed)   AT=0
+.meas TRAN IT    FIND Ic(Q4d) AT=0
+
+* ---------- differential mode amplitudes ----------
+.meas TRAN vs_pp   PP V(src)          FROM=1m TO=3m
+.meas TRAN vd_pp   PP V(b1d)          FROM=1m TO=3m
+.meas TRAN vo1_pp  PP V(c1d)          FROM=1m TO=3m
+.meas TRAN vod_pp  PP V(c1d)-V(c2d)   FROM=1m TO=3m
+
+* ---------- linear range ----------
+.meas TRAN vc1_max MAX V(c1l)          FROM=1m TO=3m
+.meas TRAN vc1_min MIN V(c1l)          FROM=1m TO=3m
+.meas TRAN vod_max MAX V(c1l)-V(c2l)   FROM=1m TO=3m
+.meas TRAN vod_min MIN V(c1l)-V(c2l)   FROM=1m TO=3m
+.end

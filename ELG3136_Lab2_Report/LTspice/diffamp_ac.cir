@@ -1,0 +1,58 @@
+* ELG3136 Lab 2: differential amplifier (Figure 7), small-signal values at 5 kHz
+*   copy d: differential mode, RS = 76k, Q2 base AC-grounded
+*   copy c: common mode, Q2's capacitor moved to B
+* Results go to View > SPICE Error Log, printed as (gain in dB, phase in degrees).
+* Devices match the bench: beta ~156 / ~147, tail current ~1.87 mA
+* (Q4 area 1.28 stands for the ~6 mV VBE mismatch of the discrete mirror).
+* Note: 2Meg, not 2M (2M means 2 milliohm in SPICE).
+
+VCC  vcc 0 10
+VEE  vee 0 -10
+VS   src 0 AC 1
+
+* ---------- copy d: differential mode ----------
+RSd  src  xd   76k
+C1d  xd   b1d  10u
+RB1d vcc  b1d  2Meg
+RB2d vcc  b2d  2Meg
+C2d  b2d  0    10u
+RC1d vcc  c1d  2.2k
+RC2d vcc  c2d  2.2k
+Q1d  c1d  b1d  ed  QP1
+Q2d  c2d  b2d  ed  QP2
+RKd  0    kd   6.8k
+Q3d  kd   kd   vee QM
+Q4d  ed   kd   vee QM 1.28
+
+* ---------- copy c: common mode ----------
+C1c  src  b1c  10u
+RB1c vcc  b1c  2Meg
+RB2c vcc  b2c  2Meg
+C2c  b2c  b1c  10u
+RC1c vcc  c1c  2.2k
+RC2c vcc  c2c  2.2k
+Q1c  c1c  b1c  ec  QP1
+Q2c  c2c  b2c  ec  QP2
+RKc  0    kc   6.8k
+Q3c  kc   kc   vee QM
+Q4c  ec   kc   vee QM 1.28
+
+.model QP1 NPN(IS=6.734e-15 BF=137 VAF=74 CJE=8p CJC=4p TF=350p)
+.model QP2 NPN(IS=6.734e-15 BF=129 VAF=74 CJE=8p CJC=4p TF=350p)
+.model QM  NPN(IS=6.734e-15 BF=150 VAF=74 CJE=8p CJC=4p TF=350p)
+
+.ac lin 3 4k 6k
+
+* vd/vs (for Rid)
+.meas AC vd_vs   FIND V(b1d)/V(src)            AT=5k
+* differential mode
+.meas AC Ad      FIND (V(c1d)-V(c2d))/V(b1d)   AT=5k
+.meas AC Ad_se   FIND V(c1d)/V(b1d)            AT=5k
+.meas AC Ads     FIND (V(c1d)-V(c2d))/V(src)   AT=5k
+* common mode
+.meas AC Acm_se  FIND V(c1c)/V(b1c)            AT=5k
+.meas AC Acm_d   FIND (V(c1c)-V(c2c))/V(b1c)   AT=5k
+* CMRR (the dB value printed is the CMRR)
+.meas AC CMRR_se PARAM Ad_se/Acm_se
+.meas AC CMRR_d  PARAM Ad/Acm_d
+.end

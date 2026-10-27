@@ -1,0 +1,46 @@
+* BJT current mirror (recreation of the Multisim circuit, Lab 2 pre-lab)
+*
+* Rx is swept with .dc instead of .step + .op. LTspice evaluates .meas
+* separately for every .step of an .op, so AT= and WHEN cannot work across
+* Rx values. Here Rx is a behavioural resistor whose value is V(rx) in kOhm,
+* so the x-axis (Vrx) reads directly in kOhm and every .meas line works.
+*
+* Three model cases are stepped with cfg:
+*   cfg=1  BF=121.3, ISE on   (model as given)          expect Icopy(1k) ~ 1.337 mA
+*   cfg=2  BF=1e6,   ISE on   (BF raised only)          expect Icopy(1k) ~ 1.359 mA (Multisim screenshot)
+*   cfg=3  BF=1e6,   ISE=0    (ideal, no base current)  expect Icopy(1k) = Iref ~ 1.380 mA
+* The ISE (B-E leakage) term adds about 10 uA of base current at 1.4 mA,
+* so raising BF alone only lifts the effective beta to about 130.
+
+R1   0   B   6.8k
+* BRx behaves exactly like a resistor of V(rx) kOhm between node 0 and VC
+BRx  0   VC  I=-V(VC)/(V(rx)*1k)
+Q1   B   B   VE  QN
+Q2   VC  B   VE  QN
+V1   VE  0   -10
+* Rx value in kOhm (swept by .dc)
+Vrx  rx  0   1
+
+.param bfv={if(cfg==1,121.3,1e6)}
+.param isev={if(cfg==3,0,1.222e-13)}
+.model QN NPN(IS=6.101e-14 BF={bfv} NF=1 VAF=2e6 IKF=0.09779 ISE={isev} NE=1.305 BR=0.2359 NR=1)
+
+.dc Vrx 1 10 0.01
+.step param cfg 1 3 1
+
+* Results: View > SPICE Error Log, one row per cfg. AT values are Rx in kOhm.
+.meas DC Iref       FIND I(R1)  AT=1
+.meas DC Icopy_1k   FIND I(BRx) AT=1
+.meas DC ratio_1k   PARAM Icopy_1k/Iref
+.meas DC Icopy_4k   FIND I(BRx) AT=4
+.meas DC Icopy_7k   FIND I(BRx) AT=7
+.meas DC Icopy_7k2  FIND I(BRx) AT=7.2
+.meas DC Icopy_8k   FIND I(BRx) AT=8
+.meas DC Icopy_10k  FIND I(BRx) AT=10
+.meas DC VCE2_7k2   FIND V(VC)-V(VE) AT=7.2
+.meas DC VCE2_8k    FIND V(VC)-V(VE) AT=8
+* Upper bound of Rx: Q2 reaches VCE,sat = 0.2 V
+.meas DC Rx_knee    WHEN V(VC)-V(VE)=0.2
+* Rx where Icopy has dropped 1% below its flat value
+.meas DC Rx_1pct    WHEN I(BRx)=0.99*Icopy_1k
+.end
