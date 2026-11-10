@@ -1,0 +1,17 @@
+LTspice 26.0.2 for Windows
+Circuit: C:\Desktop\MyNotes\uOttawa\Year_4\Electronics_II\labs\ELG3136_Lab3\ce_amp_tran.cir
+Start Time: Mon Nov  9 19:32:59 2026
+solver = Normal
+Maximum thread count: 8
+tnom = 27
+temp = 27
+method = trap
+Direct Newton iteration succeeded in finding operating point.
+Total elapsed time: 0.384 seconds.
+
+Files loaded:
+C:\Desktop\MyNotes\uOttawa\Year_4\Electronics_II\labs\ELG3136_Lab3\ce_amp_tran.cir
+
+vin_pp: PP(V(in)  )=0.00999952387065 FROM 0.0002 TO 0.001
+vout_pp: PP(V(out) )=1.26357573271 FROM 0.0002 TO 0.001
+gain: vout_pp/vin_pp=126.363589812

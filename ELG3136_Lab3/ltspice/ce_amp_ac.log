@@ -1,13 +1,13 @@
 LTspice 26.0.2 for Windows
 Circuit: C:\Desktop\MyNotes\uOttawa\Year_4\Electronics_II\labs\ELG3136_Lab3\ce_amp_ac.cir
-Start Time: Mon Nov  9 19:12:08 2026
+Start Time: Mon Nov  9 19:33:12 2026
 solver = Normal
 Maximum thread count: 8
 tnom = 27
 temp = 27
 method = trap
 Direct Newton iteration succeeded in finding operating point.
-Total elapsed time: 0.420 seconds.
+Total elapsed time: 0.295 seconds.
 
 Files loaded:
 C:\Desktop\MyNotes\uOttawa\Year_4\Electronics_II\labs\ELG3136_Lab3\ce_amp_ac.cir
