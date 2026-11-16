@@ -64,7 +64,7 @@
   align: (left + bottom, left + bottom, left + bottom, left + bottom),
   [Name], [Marcel Traore], [Student ID], [\#300379484],
   [Name], [Tian Li ], [Student ID], [\#300303671],
-  [Date], [#blank],
+  [Date], [November 10th 2026],
 )
 #v(4pt)
 = Introduction
