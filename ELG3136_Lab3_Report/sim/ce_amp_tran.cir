@@ -1,0 +1,38 @@
+* ELG3136 Lab 3: common-emitter amplifier, transient check at 5 kHz (LTspice)
+* Same circuit as ce_amp_ac.cir, driven by a 10 mVpp, 5 kHz sine,
+* like the oscilloscope view in the manual's Figure 2.
+* Open in LTspice (File > Open, file type "Netlists"), then Run.
+* Plot V(in) and V(out); put them in separate panes
+* (right-click the plot > Add Plot Pane) since their scales differ.
+* Results of .meas: View > SPICE Error Log (Ctrl+L).
+
+* Supply and source: 5 mV amplitude = 10 mVpp, 5 kHz
+V1   vcc 0 15
+Vin  in  0 SINE(0 5m 5k)
+
+* Amplifier
+C1   in  b   10u
+R1   vcc b   22k
+R2   b   0   12k
+RC   vcc c   3.3k
+RE   e   0   4.3k
+CE   e   0   10u
+Q1   c   b   e   Q2N3904
+C2   c   out 10u
+RL   out 0   4.7Meg
+
+* 2N3904 model used for the hand analysis
+.model Q2N3904 NPN(Is=6.734f Xti=3 Eg=1.11 Vaf=74.03 Bf=416.4 Ne=1.259
++ Ise=6.734f Ikf=66.78m Xtb=1.5 Br=.7371 Nc=2 Isc=0 Ikr=0 Rc=1 Cjc=3.638p
++ Mjc=.3085 Vjc=.75 Fc=.5 Cje=4.493p Mje=.2593 Vje=.75 Tr=239.5n Tf=301.2p
++ Itf=.4 Vtf=4 Xtf=2 Rb=10)
+
+* 1 ms (5 cycles), max time step 1 us for a smooth sine
+.tran 0 1m 0 1u
+
+* Peak-to-peak input and output, and their ratio (mid-band gain magnitude)
+.meas TRAN vin_pp  PP V(in)  FROM 0.2m TO 1m
+.meas TRAN vout_pp PP V(out) FROM 0.2m TO 1m
+.meas TRAN gain    PARAM vout_pp/vin_pp
+
+.end

@@ -1,0 +1,43 @@
+* ELG3136 Lab 3: common-emitter amplifier, AC sweep check (LTspice)
+* Open in LTspice (File > Open, file type "Netlists"), then Run.
+* Results of .meas: View > SPICE Error Log (Ctrl+L).
+* Plot: right-click the plot > Add Trace > V(out). With a 1 V AC input,
+* V(out) is the gain A_v (LTspice shows dB and phase).
+
+* Supply and source (ideal source, like MultiSim)
+V1   vcc 0 15
+Vin  in  0 AC 1
+* For the lab generator's 50 ohm output instead, use these two lines:
+* Vin in0 0 AC 1
+* Rs  in0 in 50
+
+* Amplifier
+C1   in  b   10u
+R1   vcc b   22k
+R2   b   0   12k
+RC   vcc c   3.3k
+RE   e   0   4.3k
+CE   e   0   10u
+Q1   c   b   e   Q2N3904
+C2   c   out 10u
+RL   out 0   4.7Meg
+
+* 2N3904 model used for the hand analysis (Rb = 10 ohm, Cjc = 3.64 pF,
+* Tf = 301 ps, Vaf = 74 V). To use LTspice's built-in model instead,
+* change Q2N3904 to 2N3904 on the Q1 line and delete this .model line.
+.model Q2N3904 NPN(Is=6.734f Xti=3 Eg=1.11 Vaf=74.03 Bf=416.4 Ne=1.259
++ Ise=6.734f Ikf=66.78m Xtb=1.5 Br=.7371 Nc=2 Isc=0 Ikr=0 Rc=1 Cjc=3.638p
++ Mjc=.3085 Vjc=.75 Fc=.5 Cje=4.493p Mje=.2593 Vje=.75 Tr=239.5n Tf=301.2p
++ Itf=.4 Vtf=4 Xtf=2 Rb=10)
+
+* AC sweep from 0.1 Hz to 10 GHz, 100 points per decade
+.ac dec 100 0.1 10G
+* To see the DC bias point instead, comment out .ac and use:
+* .op
+
+* Mid-band gain and the two 3-dB frequencies
+.meas AC Am MAX mag(V(out))
+.meas AC fL WHEN mag(V(out))=Am/sqrt(2) RISE=1
+.meas AC fH WHEN mag(V(out))=Am/sqrt(2) FALL=last
+
+.end
